@@ -1,5 +1,3 @@
-﻿
-using Newtonsoft.Json;
 using System;
 using System.Net.Http;
 using System.Text.Json;
@@ -12,57 +10,117 @@ namespace ApiProject
         
         static async Task Main()
         {
-            List<Spells> results = new List<Spells>();
+
+            List<Thing> Results = new List<Thing>();
+
             Spells g;
             //Spells spell = new Spells();
+
+            Console.WriteLine("What part of the DND API would you like to see?(do this part in lower case)");
+            string answer = Console.ReadLine(); 
+            Console.WriteLine("If you want to look for a specific thing in this class you can input it here (if not just hit enter)");
+            string answer2 = Console.ReadLine();    
             using var httpClient = new HttpClient();
-            string apiUrl = "https://www.dnd5eapi.co/api/spells";
-           
+            string apiUrl = $"https://www.dnd5eapi.co/api/{answer}";
+
             //var test = JsonConvert.DeserializeObject<List<Spells>>(apiUrl);
-
-            try
+            if (answer2 == null)
             {
-                HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
-                
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    string content = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine(content);              
-                    
-                    dynamic item = JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result);
-                    Console.WriteLine(item.name);
-                    Console.WriteLine("\n\n\n\n");
-                    JsonSerializerOptions options = new JsonSerializerOptions() 
-                    { PropertyNameCaseInsensitive = true };
+                    HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
 
-                    //g = JsonSerializer.Deserialize<ApiProject.Spells>(content, options);
-
-                    Thing thingy = JsonConvert.DeserializeObject<Thing>(content);
-
-                    //results.Add();
-
-                    Console.WriteLine($"Thingy: {thingy.ToString()}");
-
-                    Console.WriteLine("\n\n\n\n");
-
-                    foreach (var r in results)
+                    if (response.IsSuccessStatusCode)
                     {
-                        Console.WriteLine(r.ToString());
+                        string content = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine(content);
+
+                        //  dynamic item = JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result);
+                        // Console.WriteLine(item.name);
+                        Console.WriteLine("\n\n\n\n");
+                        JsonSerializerOptions options = new JsonSerializerOptions()
+                        { PropertyNameCaseInsensitive = true };
+
+                        g = JsonSerializer.Deserialize<ApiProject.Spells>(content, options);
+
+                        //Results.Add(g);
+
+                        // Thing thingy = JsonConvert.DeserializeObject<Thing>(content);
+
+                        //results.Add();
+
+                        // Console.WriteLine($"Thingy: {thingy.ToString()}");
+
+                        Console.WriteLine("\n\n\n\n");
+
+                        foreach (var r in g.Results.Where(n => n.Name == answer2))
+                        {
+                            Console.WriteLine(r.ToString());
+                        }
+
+                        // g contains a list of Thing objects called Results
                     }
 
-                    // g contains a list of Thing objects called Results
+                    else
+                    {
+                        Console.WriteLine($"Error: {response.StatusCode}");
+                    }
+                }
+                catch (HttpRequestException e)
+                {
+                    Console.WriteLine($"HTTP Request Error: {e.Message}");
                 }
 
-                else
+            }
+            else
+            {
+
+
+                try
                 {
-                    Console.WriteLine($"Error: {response.StatusCode}");
+                    HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string content = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine(content);
+
+                        //  dynamic item = JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result);
+                        // Console.WriteLine(item.name);
+                        Console.WriteLine("\n\n\n\n");
+                        JsonSerializerOptions options = new JsonSerializerOptions()
+                        { PropertyNameCaseInsensitive = true };
+
+                        g = JsonSerializer.Deserialize<ApiProject.Spells>(content, options);
+
+                        //Results.Add(g);
+
+                        // Thing thingy = JsonConvert.DeserializeObject<Thing>(content);
+
+                        //results.Add();
+
+                        // Console.WriteLine($"Thingy: {thingy.ToString()}");
+
+                        Console.WriteLine("\n\n\n\n");
+
+                        foreach (var r in g.Results)
+                        {
+                            Console.WriteLine(r.ToString());
+                        }
+
+                        // g contains a list of Thing objects called Results
+                    }
+
+                    else
+                    {
+                        Console.WriteLine($"Error: {response.StatusCode}");
+                    }
+                }
+                catch (HttpRequestException e)
+                {
+                    Console.WriteLine($"HTTP Request Error: {e.Message}");
                 }
             }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine($"HTTP Request Error: {e.Message}");
-            }
-            
           
             //Console.WriteLine("\n\n\n\n");
 
