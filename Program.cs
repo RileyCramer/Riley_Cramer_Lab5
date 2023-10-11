@@ -24,8 +24,8 @@ namespace ApiProject
             string apiUrl = $"https://www.dnd5eapi.co/api/{answer}";
 
             //var test = JsonConvert.DeserializeObject<List<Spells>>(apiUrl);
-            if (answer2 == null)
-            {
+            
+            
                 try
                 {
                     HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
@@ -51,62 +51,24 @@ namespace ApiProject
 
                         // Console.WriteLine($"Thingy: {thingy.ToString()}");
 
+
                         Console.WriteLine("\n\n\n\n");
-
-                        foreach (var r in g.Results.Where(n => n.Name == answer2))
-                        {
-                            Console.WriteLine(r.ToString());
-                        }
-
-                        // g contains a list of Thing objects called Results
-                    }
-
-                    else
+                        Console.WriteLine("----------------------------------------------------------------------------------");
+                    if (answer2 == null || answer2 == "" || answer2 == " ")
                     {
-                        Console.WriteLine($"Error: {response.StatusCode}");
-                    }
-                }
-                catch (HttpRequestException e)
-                {
-                    Console.WriteLine($"HTTP Request Error: {e.Message}");
-                }
-
-            }
-            else
-            {
-
-
-                try
-                {
-                    HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string content = await response.Content.ReadAsStringAsync();
-                        Console.WriteLine(content);
-
-                        //  dynamic item = JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result);
-                        // Console.WriteLine(item.name);
-                        Console.WriteLine("\n\n\n\n");
-                        JsonSerializerOptions options = new JsonSerializerOptions()
-                        { PropertyNameCaseInsensitive = true };
-
-                        g = JsonSerializer.Deserialize<ApiProject.Spells>(content, options);
-
-                        //Results.Add(g);
-
-                        // Thing thingy = JsonConvert.DeserializeObject<Thing>(content);
-
-                        //results.Add();
-
-                        // Console.WriteLine($"Thingy: {thingy.ToString()}");
-
-                        Console.WriteLine("\n\n\n\n");
-
                         foreach (var r in g.Results)
                         {
                             Console.WriteLine(r.ToString());
                         }
+                    }
+                    else
+                    {
+                        foreach (var r in g.Results.Where(n => n.Name.StartsWith(answer2)))
+                        {
+                            Console.WriteLine(r.ToString());
+                        }
+                    }
+                        
 
                         // g contains a list of Thing objects called Results
                     }
@@ -120,7 +82,9 @@ namespace ApiProject
                 {
                     Console.WriteLine($"HTTP Request Error: {e.Message}");
                 }
-            }
+
+            
+           
           
             //Console.WriteLine("\n\n\n\n");
 
@@ -160,4 +124,4 @@ namespace ApiProject
         */
     }
     
-}
+}   
