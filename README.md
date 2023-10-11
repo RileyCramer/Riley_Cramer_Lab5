@@ -11,5 +11,9 @@ Had a problem with my initial object creation method because I was pulling some 
 
 Had a problem with the deserializer because it used the “Spells” class but I tried to make it run through the “Thing” class to pull the data I wanted and to give a better structure, but I ran into an error where it was having trouble converting from one class to the other using the list  
 (Currently working on this step will update when fixed)
+(Fixed: Had help from instructor William Rochelle. The list I initialized at the top of my Program class was not needed and was just an empty list that I was using. So it was removed and the code worked fine after)
+
+The next step was adding the search function which was straight forward with a simple .Where addition in my for each loop for the specific search function that goes off the starting of the word. (It uses .StartsWith for the search.)
+
 
 
