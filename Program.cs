@@ -63,7 +63,7 @@ namespace ApiProject
                     }
                     else
                     {
-                        foreach (var r in g.Results.Where(n => n.Name.StartsWith(answer2)))
+                        foreach (var r in g.Results.Where(n => n.Index.Contains(answer2)))
                         {
                             Console.WriteLine(r.ToString());
                         }
