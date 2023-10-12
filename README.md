@@ -15,5 +15,5 @@ Had a problem with the deserializer because it used the “Spells” class but I
 
 The next step was adding the search function which was straight forward with a simple .Where addition in my for each loop for the specific search function that goes off the starting of the word. (It uses .StartsWith for the search.)
 
-
+I went back through and changed up my search function so that it could do a contains function rather than a starts with function to pull more knowledge. I also changed it to search for index so that I won't have to worry about some answers not getting p[ulled because the first ;letter in the name isn't capitalized.
 
